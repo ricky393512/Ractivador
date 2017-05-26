@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:paddingBottom="@dimen/activity_vertical_margin"
+android:paddingLeft="@dimen/activity_horizontal_margin"
+android:paddingRight="@dimen/activity_horizontal_margin"
+android:paddingTop="@dimen/activity_vertical_margin"
+app:layout_behavior="@string/appbar_scrolling_view_behavior"
+tools:context="com.telcel.ractivador.views.ConsultaActivity">
+
+    <TableRow
+        android:id="@+id/tabla_nombre"
+        android:layout_alignParentTop="true"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+
+        <TextView
+            android:id="@+id/textEtiqueta"
+            android:layout_width="0dp"
+            android:layout_weight="0.63"
+            android:layout_height="wrap_content"
+            android:text="Nombre:"
+            android:layout_gravity="left"
+            />
+
+        <TextView
+            android:id="@+id/txtNombre"
+            android:layout_width="0dp"
+            android:layout_weight="2.65"
+            android:layout_height="wrap_content"
+            android:text="DISTRIBUIDOR CELL"
+            android:layout_gravity="right"
+            android:textColor="@color/colorAccent"
+
+            />
+
+
+
+    </TableRow>
+
+
+    <TableRow
+        android:id="@+id/area_tabla"
+        android:layout_below="@+id/tabla_nombre"
+
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="99dp"
+            android:layout_height="wrap_content"
+            android:text="@string/hint_distribuidor"
+            android:layout_gravity="left"
+            />
+
+        <TextView
+            android:id="@+id/txtClaveDistribuidor"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_gravity="right"
+            android:textColor="@color/colorAccent"
+
+            />
+
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/hint_vendedor"
+            android:layout_gravity="left"
+
+            />
+
+        <TextView
+            android:id="@+id/txtClaveVendedor"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/colorAccent"
+            />
+
+
+    </TableRow>
+
+
+
+    <LinearLayout
+    android:id="@+id/area_iccid"
+    android:layout_below="@+id/area_tabla"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:orientation="horizontal">
+
+    <Button android:id="@+id/btnIccid"
+
+        android:drawableLeft="@drawable/ic_bar_code"
+        android:layout_width="52dp"
+        android:layout_height="wrap_content" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/til_iccid"
+        android:layout_width="236dp"
+        android:layout_height="63dp"
+        android:layout_marginLeft="32dp"
+
+        app:counterMaxLength="19"
+        app:counterOverflowTextAppearance="@style/CounterOverFlow"
+        app:counterTextAppearance="@style/Counter"
+        app:errorEnabled="true"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/campo_iccid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/hint_iccid"
+            android:maxLength="19"
+            android:inputType="phone" />
+    </android.support.design.widget.TextInputLayout>
+</LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/area_imei"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/area_iccid">
+
+
+        <Button android:id="@+id/btnImei"
+            android:drawableLeft="@drawable/ic_telefono"
+            android:layout_width="52dp"
+            android:layout_height="wrap_content" />
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/til_imei"
+            android:layout_width="232dp"
+            android:layout_height="66dp"
+            android:layout_marginLeft="32dp"
+            app:counterMaxLength="15"
+            app:counterOverflowTextAppearance="@style/CounterOverFlow"
+            app:counterTextAppearance="@style/Counter"
+            app:errorEnabled="true"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/campo_imei"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/hint_imei"
+                android:maxLength="15"
+                android:inputType="number"
+                android:singleLine="true" />
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/area_ciudad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/area_imei"
+        android:layout_alignRight="@+id/area_producto"
+        android:layout_alignEnd="@+id/area_producto"
+        android:weightSum="1">
+
+        <Button android:id="@+id/btnCiudad"
+            android:drawableLeft="@drawable/ic_city"
+            android:layout_width="52dp"
+            android:layout_height="wrap_content" />
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/til_ciudad"
+            android:layout_width="233dp"
+            android:layout_height="66dp"
+            android:layout_marginLeft="32dp"
+            app:counterMaxLength="2"
+            app:counterOverflowTextAppearance="@style/CounterOverFlow"
+            app:counterTextAppearance="@style/Counter"
+            app:errorEnabled="true">
+
+            <EditText
+                android:id="@+id/campo_ciudad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="2"
+                android:hint="@string/hint_codigo_ciudad"
+                android:inputType="number" />
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/area_producto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/area_ciudad">
+
+        <Button android:id="@+id/btnProducto"
+            android:drawableLeft="@drawable/ic_formatlist"
+            android:layout_width="52dp"
+            android:layout_height="wrap_content" />
+
+        <Spinner
+            android:id="@+id/my_spinner"
+            android:layout_height="wrap_content"
+            android:layout_width="235dp"
+            android:layout_marginLeft="32dp"
+            android:textColor="@color/colorAccent"
+            />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtTituloComentario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/area_producto"
+        android:text=" "
+        android:layout_marginTop="30dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        />
+
+
+    <TextView
+        android:id="@+id/txtResultado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtTituloComentario"
+        android:hint=" "
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/colorAccent"
+        android:layout_marginTop="20dp"
+        />
+
+
+
+
+
+
+    <!-- Bottom Bar -->
+<LinearLayout
+    android:id="@+id/bottom_bar"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:layout_alignParentBottom="true"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+
+
+    <Button
+        android:id="@+id/btnNueva"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/accion_nueva" />
+
+    <Button
+        android:id="@+id/btnConsultar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimary"
+        android:textColor="@android:color/white"
+        android:layout_weight="1"
+        android:text="@string/accion_consultar" />
+
+
+    <Button
+        android:id="@+id/boton_aceptar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:backgroundTint="@color/colorAccent"
+        android:text="@string/accion_aceptar"
+        android:textColor="@android:color/white" />
+</LinearLayout>
+
+
+</RelativeLayout>
+

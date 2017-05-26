@@ -9,7 +9,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -153,21 +152,31 @@ public abstract class BaseAppActivity extends AppCompatActivity implements Valid
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId = item.getItemId();
-
-        if (itemId == android.R.id.home) {
-            finish();
-
-        } else if (itemId == R.id.menu_settings) {
-            startActivity(new Intent(this, ConsultaActivity.class));
-
-        } else if (itemId == R.id.menu_search) {
-            onSearchRequested();
-
+        switch (item.getItemId()) {
+            case R.id.exit:
+                salir();
+                return (true);
+            case R.id.versionRvisor:
+                acercaDe();
+                return (true);
         }
-
-        return super.onOptionsItemSelected(item);
+        return (super.onOptionsItemSelected(item));
     }
+
+
+
+    private void salir() {
+        //session.logoutUser();
+    }
+
+
+    public void acercaDe(){
+        mostrarAlerta("Version 1.0");
+    }
+
+
+
+
 
 
     }

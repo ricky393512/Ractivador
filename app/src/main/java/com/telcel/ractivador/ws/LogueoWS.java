@@ -39,6 +39,7 @@ private String codigoeFinal;
         this.vendedor = vendedor;
         this.ctx=ctx;
         this.id=id;
+        session = new SessionManager(ctx);
         }
 
 @Override
@@ -55,6 +56,7 @@ protected void onPreExecute() {
 @Override
 protected Boolean doInBackground(Void... params) {
         conexion = new Conexion(ctx);
+
         try {
         if (!conexion.isAvailableWSDL(Constantes.URL)) {
         Log.e("RVISOR MOBILE", "El WS " + Constantes.URL + " no esta en linea ");

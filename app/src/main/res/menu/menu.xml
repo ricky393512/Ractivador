@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".ConsultaActivity">
+
 
     <item
-        android:id="@+id/menu_settings"
-        android:title="Configuración"
-        android:icon="@android:drawable/ic_menu_preferences"
-        />
 
+        android:id="@+id/exit"  app:showAsAction="never" android:title="Salir">
+    </item>
     <item
-        android:id="@+id/menu_search"
-        android:title="Search"
 
-        android:icon="@android:drawable/ic_menu_search"
-        android:actionViewClass="android.widget.SearchView"/>
-
+        android:id="@+id/versionRvisor"  app:showAsAction="never" android:title="Acerca de...">
+    </item>
 </menu>
+
