@@ -23,4 +23,15 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:design:25.3.1'
+    compile 'com.mobsandgeeks:android-saripaar:2.0.3'
+
+
+}
+
+
+dependencies { compile files('libs/ksoap2-android-assembly-3.4.0-jar-with-dependencies.jar')
+    compile 'com.google.android.gms:play-services-appindexing:9.6.1'
+    compile 'com.google.android.gms:play-services-vision:9.6.1'
+
 }

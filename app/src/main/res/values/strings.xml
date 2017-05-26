@@ -1,3 +1,33 @@
 <resources>
     <string name="app_name">Ractivador</string>
+
+    <!-- Strings relacionadas al  login -->
+    <string name="hint_imei">Imei:</string>
+    <string name="hint_iccid">Iccid:</string>
+    <string name="hint_tipo_activacion">Tipo de Activación:</string>
+    <string name="hint_codigo_ciudad">Codigo Ciudad:</string>
+    <string name="hint_distribuidor">Clave Distribuidor</string>
+    <string name="hint_vendedor">Clave Vendedor</string>
+    <string name="error_distribuidor_vacio">La clave de distribuidor no debe estar vacia</string>
+    <string name="error_vendedor_vacio"> La clave de vendedor no debe estar vacia</string>
+    <string name="error_distribuidor_solo_numeros"> La clave de distribuidor deben ser digitos</string>
+    <string name="error_vendedor_solo_numeros">La clave de vendedor deben ser digitos</string>
+    <string name="error_distribuidor_corto">La clave de distribuidor deben ser menor a 5 digitos</string>
+    <string name="error_vendedor_corto">La clave de vendedor deben ser menor a 5 digitos</string>
+    <string name="error_distribuidor_incorrecto">Clave de Distribuidor incorrecta</string>
+    <string name="error_vendedor_incorrecto">Clave de Vendedor incorrecta</string>
+
+    <string name="error_ws_nodisponible">PROBLEMA con WebService</string>
+    <string name="error_conexion_nodisponible"> Tu Dispositivo no tiene Conexion a Internet.</string>
+    <string name="error_titulo_conexion_nodisponible"> Conexion a Internet</string>
+
+
+
+
+
+    <string name="accion_ingresar">Ingresar</string>
+    <string name="accion_aceptar">Activa</string>
+    <string name="accion_nueva">Nueva</string>
+    <string name="accion_consultar">Consulta</string>
+
 </resources>
