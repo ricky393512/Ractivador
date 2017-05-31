@@ -6,17 +6,15 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import com.telcel.ractivador.R;
+import com.telcel.ractivador.adapters.NothingSelectedSpinnerAdapter;
 import com.telcel.ractivador.exceptions.WebServiceConexionException;
 import com.telcel.ractivador.net.Conexion;
 import com.telcel.ractivador.net.Constantes;
 import com.telcel.ractivador.pojo.TipoProducto;
-
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,7 +78,8 @@ public class CoopelWS extends AsyncTask<Void, Void, Boolean> {
     protected void onPostExecute(final Boolean success) {
         if(!success){
     try{
-            if (!conexion.isAvailableWSDL(Constantes.URL)) {
+
+        if (!conexion.isAvailableWSDL(Constantes.URL)) {
                 Log.e("RVISOR MOBILE", "El WS " + Constantes.URL + " no esta en linea ");
 
             }
@@ -92,10 +91,10 @@ public class CoopelWS extends AsyncTask<Void, Void, Boolean> {
         }
 
             List<TipoProducto> listTP = new ArrayList<>();
-            TipoProducto tp1 = new TipoProducto();
-            tp1.setIdProducto(-1);
-            tp1.setDescripcion("NO DISPONIBLE WEB SERVICES  OPRIMIR BOTON PRODUCTOS PARA RECARGAR CATALOGO DE PRODUCTOS");
-            listTP.add(tp1);
+          TipoProducto tp1 = new TipoProducto();
+        tp1.setIdProducto(-1);
+        tp1.setDescripcion("NO DISPONIBLE WEB SERVICES  OPRIMIR BOTON PRODUCTOS PARA RECARGAR CATALOGO DE PRODUCTOS");
+        listTP.add(tp1);
             ArrayAdapter adapter = new ArrayAdapter(context, R.layout.row,  listTP);
             adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
             mySpinner.setAdapter(adapter);
@@ -103,12 +102,15 @@ public class CoopelWS extends AsyncTask<Void, Void, Boolean> {
         else{
             ArrayAdapter adapter = new ArrayAdapter(context, R.layout.row, listaProductos);
             adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-            mySpinner.setAdapter(adapter);
+            mySpinner.setAdapter(
+                    new NothingSelectedSpinnerAdapter(
+                            adapter,
+                            R.layout.contact_spinner_row_nothing_selected,
+                            // R.layout.contact_spinner_nothing_selected_dropdown, // Optional
+                            context));
             Toast.makeText(context, "Catalogos Actualizados",
                     Toast.LENGTH_LONG).show();
         }
-
-
     }
 
     @Override

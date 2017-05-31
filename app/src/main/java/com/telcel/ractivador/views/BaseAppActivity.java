@@ -9,14 +9,15 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,21 +58,45 @@ public abstract class BaseAppActivity extends AppCompatActivity implements Valid
         public void onValidationFailed(List<ValidationError> errors) {
             validated = false;
 
+
+          /*  View selectedView = spinner.getSelectedView();
+            if (selectedView != null && selectedView instanceof TextView) {
+                TextView selectedTextView = (TextView) selectedView;
+                if (!valid) {
+                    String errorString = selectedTextView.getResources().getString(mErrorStringResource);
+                    selectedTextView.setError(errorString);
+                }
+                else {
+                    selectedTextView.setError(null);
+                }
+            }*/
+
             for (ValidationError error : errors) {
                 View view = error.getView();
                 String message = error.getCollatedErrorMessage(this);
-
-
                 // Display error messages
                 if (view instanceof Spinner) {
                     Spinner sp = (Spinner) view;
-                    view = ((LinearLayout) sp.getSelectedView()).getChildAt(0);        // we are actually interested in the text view spinner has
+                    ((TextView) ((Spinner) view).getSelectedView()).setError("DEBES SELECCIONAR");
+                    View selectedView =    ((Spinner) view).getSelectedView();        // we are actually interested in the text view spinner has
+                    if (selectedView != null && selectedView instanceof TextView) {
+                        Log.e("RVISOR ","Enree al iFFFFFFFFFFFFFFFFFFFFFFF ");
+                    }
+                    //((TextView) ((Spinner) view).getSelectedView()).setError("DEBES SELECCIONAR");
+                    TextView selectedTextView = (TextView) selectedView;
+                    selectedTextView.setTextColor(Color.BLUE);
+                    selectedTextView.setError("AQUIIIIIIIIIIIIIIII");
+                    selectedTextView.setText("Debes seleccionar un elemento de la lista");
+                    Log.e("RVISOR ","Enree a eserror tipo spionner "+((TextView) ((Spinner) view).getSelectedView()).getError());
+//                  ((TextView) ((Spinner) view).getSelectedView()).
+
                 }
 
                 if (view instanceof TextView) {
                     TextView et = (TextView) view;
                     et.setError(message);
                     et.requestFocus();
+                    et.setHint("Problemas");
                 }
             }
         }
