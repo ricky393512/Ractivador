@@ -1,14 +1,11 @@
 package com.telcel.ractivador.views;
 
 import android.app.NotificationManager;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
@@ -16,33 +13,26 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mobsandgeeks.saripaar.annotation.Length;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.mobsandgeeks.saripaar.annotation.Order;
 import com.mobsandgeeks.saripaar.annotation.Select;
 import com.telcel.ractivador.R;
-import com.telcel.ractivador.exceptions.WebServiceConexionException;
 import com.telcel.ractivador.net.Conexion;
-import com.telcel.ractivador.net.Constantes;
 import com.telcel.ractivador.net.Mensaje;
 import com.telcel.ractivador.pojo.Activacion;
 import com.telcel.ractivador.pojo.Credencial;
 import com.telcel.ractivador.pojo.RespuestaActivacion;
 import com.telcel.ractivador.pojo.TipoProducto;
 import com.telcel.ractivador.session.SessionManager;
+import com.telcel.ractivador.ws.ActivacionWS;
+import com.telcel.ractivador.ws.AsyncResponseActivacion;
 import com.telcel.ractivador.ws.CoopelWS;
 
-import org.ksoap2.serialization.SoapObject;
-import org.ksoap2.serialization.SoapSerializationEnvelope;
-import org.ksoap2.transport.HttpTransportSE;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
-public class ConsultaActivity extends BaseAppActivity {
+public class ConsultaActivity extends BaseAppActivity implements AsyncResponseActivacion {
     @Order(value=2)
     @NotEmpty(message = "Debes ingresar un imei")
     @Length(max=15,min = 15,message = "Debes ingresar un imei de 15 digitos")
@@ -68,54 +58,17 @@ public class ConsultaActivity extends BaseAppActivity {
     private Conexion conexion;
     private Mensaje mensaje;
     private final String LOG_TAG="RVISOR";
-
+    private static final int ASYNC_ACTIVACION = 2; //ID for async
+    private ActivacionWS activacionWS;
 
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);
     }
 
-    public void confirmaAcciones(){
-        AlertDialog.Builder builder =
-                new AlertDialog.Builder(ConsultaActivity.this);
-/*
-        View child = getLayoutInflater().inflate(R.layout.midialogo, null);
-        builder.setView(child);
-
-        builder.setMessage("¿Estas seguro de mandar la activación?")
-                .setTitle("Confirmacion")
-                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener()  {
-                    public void onClick(DialogInterface dialog, int id) {
-                        Log.i("Dialogos", "Confirmacion Aceptada.");
-                        dialog.dismiss();
-                        realizaActivacion();
-                    }
-                })
-                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        Log.i("Dialogos", "Confirmacion Cancelada.");
-                        dialog.dismiss();
-                    }
-                });
-*/
-        builder.create();
-        builder.show();
-
-    }
-
-
 
     public void  realizaActivacion(){
         final TipoProducto tipoProducto = (TipoProducto) ((Spinner) findViewById(R.id.my_spinner)).getSelectedItem();
-        /*   Log.i("RVISOR MOBILE","VAlor de producto seleccionado !!!"+tipoProducto.getIdProducto());
-        if(tipoProducto.getIdProducto()==-1){
-            Log.e("RVISOR MOBILE","VAlor -1 de producto seleccionado !!!");
-            mensaje.getMostrarAlerta(ConsultaActivity.this,"Error !!!","Se ha presentado el siguiente problema con el WS de Catalogos \n"+
-                    "Favor de recargar el catalogo para que puedas elegir un producto valido","REGRESAR A LA ACTIVACION"
-            );
-            return;
-        }
-*/
         validate();
         if (validated) {
             final Activacion activacion = new Activacion();
@@ -127,144 +80,27 @@ public class ConsultaActivity extends BaseAppActivity {
                 campo_codigo_ciudad.setError("Debes ingresar un codigo de ciudad");
                 campo_codigo_ciudad.requestFocus();
             }
+            Log.i("RVISOR MOBILE","VAlor de producto seleccionado !!!"+tipoProducto.getIdProducto());
+            if(tipoProducto.getIdProducto()==-1){
+                Log.e("RVISOR MOBILE","VAlor -1 de producto seleccionado !!!");
+                mensaje.getMostrarAlerta(ConsultaActivity.this,"Error !!!","Se ha presentado el siguiente problema con el WS de Catalogos \n"+
+                        "Favor de recargar el catalogo para que puedas elegir un producto valido","REGRESAR A LA ACTIVACION"
+                );
+                return;
+            }
             activacion.setIdProducto(tipoProducto.getIdProducto());
             activacion.setIdModalidad(tipoProducto.getIdModalidad());
             activacion.setCodigoDistribuidor(credencial.getClaveDistribuidor());
             activacion.setCodigoVendedor(credencial.getClaveVendedor());
-
-            new AsyncTask<Void, Void, Boolean>() {
-                private TextView txtResultado;
-                private List<TipoProducto> listaProductos;
-
-                private ProgressDialog progreso;
-                RespuestaActivacion respuestaActivacion = new RespuestaActivacion();
-
-
-                @Override
-                protected void onPreExecute() {
-                    super.onPreExecute();
-                    progreso = new ProgressDialog(ConsultaActivity.this);
-                    progreso.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                    progreso.setMessage("Activando ............");
-                    progreso.setCancelable(false);
-                    progreso.show();
-
-                }
-
-                @Override
-                protected Boolean doInBackground(Void... params) {
-                    listaProductos = new ArrayList<TipoProducto>();
-                    try {
-                        if (!conexion.isAvailableWSDL(Constantes.URL)) {
-                            Log.e("RVISOR MOBILE", "El WS " + Constantes.URL + " no esta en linea ");
-                            return false;
-                        }
-                    } catch (Exception e) {
-                        return false;
-                    }
-                    // Create the outgoing message
-                    SoapObject requestObject = new SoapObject(Constantes.NAMESPACE, Constantes.METHOD_NAME_ACTIVA);
-                    // Set Parameter
-                    requestObject.addProperty("imei", activacion.getImei());
-                    requestObject.addProperty("iccid", activacion.getIccid());
-                    requestObject.addProperty("cod_ciudad", activacion.getCodigoCiudad());
-                    requestObject.addProperty("cod_distribuidor", activacion.getCodigoDistribuidor());
-                    requestObject.addProperty("cod_vendedor", activacion.getCodigoVendedor());
-                    requestObject.addProperty("id_tipo_producto", tipoProducto.getIdProducto());
-                    requestObject.addProperty("id_modalidad_activacion", tipoProducto.getIdModalidad());
-
-
-                    SoapSerializationEnvelope envelope = conexion.getSoapSerializationEnvelope(requestObject);
-                    HttpTransportSE ht = conexion.getHttpTransportSE(Constantes.URL, Constantes.TIME_OUT);
-
-                    try {
-
-                        Object retObj = conexion.llamadaAlWS(envelope, ht, Constantes.SOAP_ACTION_ACTIVA);
-                        respuestaActivacion = conexion.obtenerRespuestaActivaSoap((SoapObject) retObj);
-                    } catch (WebServiceConexionException e) {
-                        e.printStackTrace();
-                        respuestaActivacion.setCodigo(-1);
-                        respuestaActivacion.setMensaje(e.getMessage());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        respuestaActivacion.setCodigo(-1);
-                        respuestaActivacion.setMensaje(e.getMessage());
-                    }
-
-                    if (respuestaActivacion.getCodigo() == 100)
-                        return true;
-                    else
-                        return false;
-                }
-
-
-                @Override
-                protected void onPostExecute(final Boolean success) {
-
-                    progreso.dismiss();
-
-                    if (!success) {
-                        String titulo = "Error !!!";
-                        String mensaje1 = "Se ha presentado el siguiente problema: \n"
-                                + respuestaActivacion.getMensaje() +
-                                " con codigo " + respuestaActivacion.getCodigo();
-                        mensaje.getMostrarAlerta(ConsultaActivity.this, titulo,
-                                mensaje1, "OK");
-
-
-                        mensaje.getNotificationError(1, R.mipmap.ic_launcher, "Error de Activacion", "Se ha presentado el siguiente problema con la activacion: \n"
-                                + respuestaActivacion.getMensaje()
-                                + "\n"
-                        );
-
-
-                    } else {
-
-                        mostrarAlertaExito(ConsultaActivity.this, "Atención", "Se ha realizado la activacion correctamente \n"
-                                + respuestaActivacion.getMensaje()
-                                + "\n"
-                                + "Con telefono: "
-
-                                + respuestaActivacion.getTelefono()
-                                + "\n"
-                                + "Y monto: "
-
-                                + respuestaActivacion.getMonto()
-                                + "\n", "NUEVA ACTIVACION"
-                        );
-                        mensaje.getNotificationExito(1, R.mipmap.ic_launcher, "Aviso de Activacion", "Se ha realizado la activacion correctamente \n"
-                                + respuestaActivacion.getMensaje()
-                                + "\n"
-                                + "Con telefono: "
-
-                                + respuestaActivacion.getTelefono()
-                                + "\n"
-                                + "Y monto: "
-
-                                + respuestaActivacion.getMonto()
-                                + "\n", respuestaActivacion.getTelefono(), respuestaActivacion.getMonto());
-                    }
-
-
-                }
-
-                @Override
-                protected void onCancelled() {
-                    Toast.makeText(ConsultaActivity.this, "Error", Toast.LENGTH_LONG).show();
-                }
-
-
-            }.execute();
+            activacion.setTipoProducto(tipoProducto);
+            activacionWS = new ActivacionWS(ConsultaActivity.this,activacion, ASYNC_ACTIVACION);
+            activacionWS.delegate=this;
+            activacionWS.execute((Void) null);
 
 
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-    }
 
    public void initView(){
        Button btnIccid = (Button) findViewById(R.id.btnIccid);
@@ -315,20 +151,16 @@ public class ConsultaActivity extends BaseAppActivity {
 
 
        btnActivar.setOnClickListener(new View.OnClickListener() {
-
            @Override
            public void onClick(View v) {
-               // And to get the actual User object that was selected, you can do this.
-               //TipoProducto tipoProducto = (TipoProducto) ((Spinner) findViewById(R.id.my_spinner)).getSelectedItem();
-               realizaActivacion();
-          /*     if(conexion.estaConectado()){
+
+             if(conexion.estaConectado()){
                    confirmaAcciones();
                }else{
 
                    mensaje.getMostrarAlerta(ConsultaActivity.this, getString(R.string.error_titulo_conexion_nodisponible),
                            getString(R.string.error_conexion_nodisponible),"OK");
                }
- */
 
            }
        });
@@ -454,5 +286,79 @@ public class ConsultaActivity extends BaseAppActivity {
     }
 
 
-}
+    public void confirmaAcciones(){
+        AlertDialog.Builder builder =
+                new AlertDialog.Builder(ConsultaActivity.this);
+        builder.setMessage("¿Estas seguro de mandar la activación?")
+                .setTitle("Confirmacion")
+                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener()  {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Log.i("Dialogos", "Confirmacion Aceptada.");
+                        dialog.dismiss();
+                        realizaActivacion();
+                    }
+                })
+                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Log.i("Dialogos", "Confirmacion Cancelada.");
+                        dialog.dismiss();
+                    }
+                });
+        builder.create();
+        builder.show();
 
+    }
+
+
+    @Override
+    public void onProcessFinish(RespuestaActivacion respuestaActivacion, int id) {
+        if(id==ASYNC_ACTIVACION) {
+        if(respuestaActivacion.getCodigo()!=100){
+
+            String mensaje1 = "Se ha presentado el siguiente problema: \n"
+                    + respuestaActivacion.getMensaje() +
+                    " con codigo " + respuestaActivacion.getCodigo();
+            mensaje.getMostrarAlerta(ConsultaActivity.this, "Error1",
+                    mensaje1, "OK");
+
+
+            mensaje.getNotificationError(1, R.mipmap.ic_launcher, "Error de Activacion", "Se ha presentado el siguiente problema con la activacion: \n"
+                    + respuestaActivacion.getMensaje()
+                    + "\n"
+            );
+
+
+        } else {
+
+            mostrarAlertaExito(ConsultaActivity.this, "Atención", "Se ha realizado la activacion correctamente \n"
+                    + respuestaActivacion.getMensaje()
+                    + "\n"
+                    + "Con telefono: "
+
+                    + respuestaActivacion.getTelefono()
+                    + "\n"
+                    + "Y monto: "
+
+                    + respuestaActivacion.getMonto()
+                    + "\n", "NUEVA ACTIVACION"
+            );
+            mensaje.getNotificationExito(1, R.mipmap.ic_launcher, "Aviso de Activacion", "Se ha realizado la activacion correctamente \n"
+                    + respuestaActivacion.getMensaje()
+                    + "\n"
+                    + "Con telefono: "
+
+                    + respuestaActivacion.getTelefono()
+                    + "\n"
+                    + "Y monto: "
+
+                    + respuestaActivacion.getMonto()
+                    + "\n", respuestaActivacion.getTelefono(), respuestaActivacion.getMonto());
+
+
+        }
+
+
+
+    }
+    }
+}

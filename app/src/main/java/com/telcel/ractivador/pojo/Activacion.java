@@ -37,6 +37,15 @@ public class Activacion implements KvmSerializable {
     private String codigoDistribuidor;
     private String codigoVendedor;
     private Integer idModalidad;
+    private TipoProducto tipoProducto;
+
+    public TipoProducto getTipoProducto() {
+        return tipoProducto;
+    }
+
+    public void setTipoProducto(TipoProducto tipoProducto) {
+        this.tipoProducto = tipoProducto;
+    }
 
     public String getCodigoDistribuidor() {
         return codigoDistribuidor;

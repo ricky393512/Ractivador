@@ -57,20 +57,6 @@ public abstract class BaseAppActivity extends AppCompatActivity implements Valid
         @Override
         public void onValidationFailed(List<ValidationError> errors) {
             validated = false;
-
-
-          /*  View selectedView = spinner.getSelectedView();
-            if (selectedView != null && selectedView instanceof TextView) {
-                TextView selectedTextView = (TextView) selectedView;
-                if (!valid) {
-                    String errorString = selectedTextView.getResources().getString(mErrorStringResource);
-                    selectedTextView.setError(errorString);
-                }
-                else {
-                    selectedTextView.setError(null);
-                }
-            }*/
-
             for (ValidationError error : errors) {
                 View view = error.getView();
                 String message = error.getCollatedErrorMessage(this);
@@ -82,13 +68,11 @@ public abstract class BaseAppActivity extends AppCompatActivity implements Valid
                     if (selectedView != null && selectedView instanceof TextView) {
                         Log.e("RVISOR ","Enree al iFFFFFFFFFFFFFFFFFFFFFFF ");
                     }
-                    //((TextView) ((Spinner) view).getSelectedView()).setError("DEBES SELECCIONAR");
                     TextView selectedTextView = (TextView) selectedView;
                     selectedTextView.setTextColor(Color.BLUE);
                     selectedTextView.setError("AQUIIIIIIIIIIIIIIII");
                     selectedTextView.setText("Debes seleccionar un elemento de la lista");
                     Log.e("RVISOR ","Enree a eserror tipo spionner "+((TextView) ((Spinner) view).getSelectedView()).getError());
-//                  ((TextView) ((Spinner) view).getSelectedView()).
 
                 }
 
@@ -96,7 +80,7 @@ public abstract class BaseAppActivity extends AppCompatActivity implements Valid
                     TextView et = (TextView) view;
                     et.setError(message);
                     et.requestFocus();
-                    et.setHint("Problemas");
+
                 }
             }
         }
@@ -129,6 +113,8 @@ public abstract class BaseAppActivity extends AppCompatActivity implements Valid
         android.support.v7.app.AlertDialog dialog = alert.create();
         dialog.show();
     }
+
+
 
     protected void mostrarAlerta(String msg) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
