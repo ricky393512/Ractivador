@@ -116,9 +116,9 @@ public abstract class BaseAppActivity extends AppCompatActivity implements Valid
 
 
 
-    protected void mostrarAlerta(String msg) {
+    protected void mostrarAlerta(String msg,String titulo) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getResources().getString(R.string.app_name))
+        builder.setTitle(titulo)
                 .setMessage(msg)
                 .setCancelable(false)
                 .setIcon(android.R.drawable.ic_dialog_alert)
@@ -182,7 +182,7 @@ public abstract class BaseAppActivity extends AppCompatActivity implements Valid
 
 
     public void acercaDe(){
-        mostrarAlerta("Version 1.0");
+        mostrarAlerta("Version 1.0","Rvisor");
     }
 
 

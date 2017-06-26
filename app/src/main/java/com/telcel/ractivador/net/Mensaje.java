@@ -6,7 +6,11 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.support.v4.app.NotificationCompat;
 
 import com.telcel.ractivador.MainActivity;
 import com.telcel.ractivador.R;
@@ -23,6 +27,42 @@ public class Mensaje {
     public Mensaje(Context context){
         this.context=context;
     }
+
+
+    private void sendNotification(Context ctx,String messageBody, Bitmap image, String TrueOrFalse, String paginaParaDireccionar, Bitmap imageIcon, String ticker, String tituloNotificacion, String sumario, String tituloInterior) {
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(ctx)
+                .setLargeIcon(image)/*Notification icon image*/
+                .setSmallIcon(R.drawable.ic_stat_name)
+                .setContentTitle(tituloNotificacion)
+                .setContentText(messageBody)
+                .setLargeIcon(imageIcon)
+                .setTicker(ticker)
+                .setStyle(new NotificationCompat.BigPictureStyle().setBigContentTitle(tituloInterior)
+                        .bigPicture(image).setSummaryText(sumario))/*Notification with Image*/
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                ;
+        notificationBuilder.setVibrate(new long[] { 100, 200, 100, 500 });
+        // API 11 o mayor
+        //    notificationBuilder.setDefaults(Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND | Notification.FLAG_SHOW_LIGHTS);
+        notificationBuilder.setLights(Color.YELLOW, 300, 100);
+
+
+        NotificationManager notificationManager =
+                (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+    }
+
+
+
+
+
+
+
+
+
 
 
     public void getNotificationExito(int id, int iconId, String titulo, String contenido, String telefono, String monto) {
@@ -82,6 +122,10 @@ public class Mensaje {
         // Construir la notificación y emitirla
         notifyMgr.notify(id, builder.build());
     }
+
+
+
+
 
 
     public void getMostrarAlerta(Context context, String title, String message, String titlePositiveButton) {

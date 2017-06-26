@@ -1,7 +1,6 @@
 package com.telcel.ractivador.views;
 
 import android.app.NotificationManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -264,28 +263,6 @@ public class ConsultaActivity extends BaseAppActivity implements AsyncResponseAc
 
 
 
-
-    public void mostrarAlertaExito(Context context, String title, String message,String titlePositiveButton) {
-        AlertDialog.Builder alert = new AlertDialog.Builder(ConsultaActivity.this, R.style.myDialog);
-        alert.setTitle(title);
-        alert.setMessage(message+ "\n"
-        );
-        alert.setPositiveButton(titlePositiveButton, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                dialog.dismiss();
-                finish();
-                startActivity(getIntent());
-
-            }
-        });
-        AlertDialog dialog = alert.create();
-        dialog.setCancelable(false);
-        dialog.show();
-    }
-
-
     public void confirmaAcciones(){
         AlertDialog.Builder builder =
                 new AlertDialog.Builder(ConsultaActivity.this);
@@ -318,8 +295,9 @@ public class ConsultaActivity extends BaseAppActivity implements AsyncResponseAc
             String mensaje1 = "Se ha presentado el siguiente problema: \n"
                     + respuestaActivacion.getMensaje() +
                     " con codigo " + respuestaActivacion.getCodigo();
-            mensaje.getMostrarAlerta(ConsultaActivity.this, "Error1",
-                    mensaje1, "OK");
+            //mensaje.getMostrarAlerta(ConsultaActivity.this, "Error1",
+              //      mensaje1, "OK");
+            mostrarAlerta(mensaje1,"Error");
 
 
             mensaje.getNotificationError(1, R.mipmap.ic_launcher, "Error de Activacion", "Se ha presentado el siguiente problema con la activacion: \n"
@@ -330,7 +308,7 @@ public class ConsultaActivity extends BaseAppActivity implements AsyncResponseAc
 
         } else {
 
-            mostrarAlertaExito(ConsultaActivity.this, "Atención", "Se ha realizado la activacion correctamente \n"
+            String mensajeExito ="Se ha realizado la activacion correctamente "
                     + respuestaActivacion.getMensaje()
                     + "\n"
                     + "Con telefono: "
@@ -340,8 +318,12 @@ public class ConsultaActivity extends BaseAppActivity implements AsyncResponseAc
                     + "Y monto: "
 
                     + respuestaActivacion.getMonto()
-                    + "\n", "NUEVA ACTIVACION"
-            );
+                    + "\n";
+
+
+            mostrarAlerta(mensajeExito,"Atención");
+
+
             mensaje.getNotificationExito(1, R.mipmap.ic_launcher, "Aviso de Activacion", "Se ha realizado la activacion correctamente \n"
                     + respuestaActivacion.getMensaje()
                     + "\n"

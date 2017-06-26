@@ -85,7 +85,7 @@ public class MainActivity extends BaseAppActivity implements AsyncResponse{
         Log.e("Ractivador","Entreeeeeeeeeeee!!");
         Log.e("Ractivador","Estoy conectado !!"+conexion.estaConectado());
         if(!conexion.estaConectado()) {
-            mostrarAlerta("NO ESTA CONECTADO");
+            mostrarAlerta("NO ESTA CONECTADO","RACTIVADOR");
             return;
         }
         validate();
@@ -111,9 +111,9 @@ public class MainActivity extends BaseAppActivity implements AsyncResponse{
             } else if (respuestaLogueo.getMensaje().startsWith("Clave de vendedor")) {
                 mClaveVendedorView.setError(getString(R.string.error_vendedor_incorrecto));
                 mClaveVendedorView.requestFocus();
-                mostrarAlerta("Clave de Vendedor Error");
+                mostrarAlerta("Clave de Vendedor Error","ERROR");
             } else {
-                mostrarAlerta(respuestaLogueo.getMensaje());
+                mostrarAlerta(respuestaLogueo.getMensaje(),"ERROR");
                 //  mostrarAlerta(ctx, ctx.getString(R.string.error_ws_nodisponible),
                 //        respuestaLogueo.getMensaje(), false);
             }
