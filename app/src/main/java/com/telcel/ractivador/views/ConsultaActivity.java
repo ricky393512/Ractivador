@@ -4,8 +4,11 @@ import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -122,6 +125,64 @@ public class ConsultaActivity extends BaseAppActivity implements AsyncResponseAc
        txtClaveVendedor.setText(credencial.getClaveVendedor());
        txtClaveDistribuidor.setText(credencial.getClaveDistribuidor());
        mensaje=new Mensaje(getApplicationContext());
+
+       campo_codigo_ciudad.addTextChangedListener(new TextWatcher() {
+
+           public void afterTextChanged(Editable s) {}
+
+           public void beforeTextChanged(CharSequence s, int start,
+                                         int count, int after) {
+           }
+
+           public void onTextChanged(CharSequence s, int start,
+                                     int before, int count) {
+               if(campo_codigo_ciudad.getText().length()<2 || campo_codigo_ciudad.getText().length()>2){
+                   campo_codigo_ciudad.setTextColor(Color.BLACK);
+               }else{
+                   campo_codigo_ciudad.setTextColor(Color.BLUE);
+               }
+
+           }
+       });
+
+       campo_iccid.addTextChangedListener(new TextWatcher() {
+
+           public void afterTextChanged(Editable s) {}
+
+           public void beforeTextChanged(CharSequence s, int start,
+                                         int count, int after) {
+           }
+
+           public void onTextChanged(CharSequence s, int start,
+                                     int before, int count) {
+               if(campo_iccid.getText().length()<19 || campo_iccid.getText().length()>19){
+                   campo_iccid.setTextColor(Color.BLACK);
+               }else{
+                   campo_iccid.setTextColor(Color.BLUE);
+               }
+
+           }
+       });
+
+       campo_imei.addTextChangedListener(new TextWatcher() {
+
+           public void afterTextChanged(Editable s) {}
+
+           public void beforeTextChanged(CharSequence s, int start,
+                                         int count, int after) {
+           }
+
+           public void onTextChanged(CharSequence s, int start,
+                                     int before, int count) {
+               if(campo_imei.getText().length()<15 || campo_imei.getText().length()>15){
+                   campo_imei.setTextColor(Color.BLACK);
+               }else{
+                   campo_imei.setTextColor(Color.BLUE);
+               }
+
+           }
+       });
+
 
 
        btnConsultar.setOnClickListener(new View.OnClickListener() {
@@ -300,11 +361,11 @@ public class ConsultaActivity extends BaseAppActivity implements AsyncResponseAc
             mostrarAlerta(mensaje1,"Error");
 
 
-            mensaje.getNotificationError(1, R.mipmap.ic_launcher, "Error de Activacion", "Se ha presentado el siguiente problema con la activacion: \n"
+          /*  mensaje.getNotificationError(1, R.mipmap.ic_launcher, "Error de Activacion", "Se ha presentado el siguiente problema con la activacion: \n"
                     + respuestaActivacion.getMensaje()
                     + "\n"
             );
-
+ */
 
         } else {
 

@@ -129,7 +129,9 @@ tools:context="com.telcel.ractivador.views.ConsultaActivity">
             android:ems="10"
             android:hint="@string/hint_iccid"
             android:maxLength="19"
-            android:inputType="phone" />
+            android:inputType="phone"
+
+            />
     </android.support.design.widget.TextInputLayout>
 </LinearLayout>
 
@@ -222,9 +224,9 @@ tools:context="com.telcel.ractivador.views.ConsultaActivity">
         <Spinner
             android:id="@+id/my_spinner"
             android:layout_height="wrap_content"
-            android:layout_width="235dp"
+            android:layout_width="match_parent"
             android:layout_marginLeft="32dp"
-            android:textColor="@color/colorAccent"
+
             />
     </LinearLayout>
 

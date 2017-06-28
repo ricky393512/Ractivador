@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.telcel.ractivador.R;
+import com.telcel.ractivador.session.SessionManager;
 
 import java.util.List;
 
@@ -34,11 +36,12 @@ public abstract class BaseAppActivity extends AppCompatActivity implements Valid
         protected Validator validator;
         protected boolean validated;
         private ProgressDialog mProgressDialog;
+        private SessionManager session;
 
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-
+            session = new SessionManager(getApplicationContext());
             validator = new Validator(this);
             validator.setValidationListener(this);
         }
@@ -68,10 +71,21 @@ public abstract class BaseAppActivity extends AppCompatActivity implements Valid
                     if (selectedView != null && selectedView instanceof TextView) {
                         Log.e("RVISOR ","Enree al iFFFFFFFFFFFFFFFFFFFFFFF ");
                     }
+
+
                     TextView selectedTextView = (TextView) selectedView;
-                    selectedTextView.setTextColor(Color.BLUE);
-                    selectedTextView.setError("AQUIIIIIIIIIIIIIIII");
-                    selectedTextView.setText("Debes seleccionar un elemento de la lista");
+                    selectedTextView.setTextColor(Color.RED);
+                    //selectedTextView.setError("AQUIIIIIIIIIIIIIIII");
+                    selectedTextView.setText("Debes seleccionar un elemento");
+                //    ViewGroup.LayoutParams lparams = new ViewGroup.LayoutParams(30,ViewGroup.LayoutParams.WRAP_CONTENT);
+                  // selectedTextView.setLayoutParams(new  );
+                    ViewGroup.LayoutParams params = (ViewGroup.LayoutParams) selectedTextView.getLayoutParams();
+                    Log.e("RIVISOR"," Altura "+ params.height);
+                    Log.e("RIVISOR"," BAse "+ params.width);
+                    selectedTextView.setLayoutParams(params);
+
+                    selectedTextView.setTextSize(12);
+                  //  selectedTextView.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
                     Log.e("RVISOR ","Enree a eserror tipo spionner "+((TextView) ((Spinner) view).getSelectedView()).getError());
 
                 }
@@ -177,7 +191,7 @@ public abstract class BaseAppActivity extends AppCompatActivity implements Valid
 
 
     private void salir() {
-        //session.logoutUser();
+        session.logoutUser();
     }
 
 

@@ -2,7 +2,10 @@ package com.telcel.ractivador;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -53,6 +56,40 @@ public class MainActivity extends BaseAppActivity implements AsyncResponse{
         });
         conexion = new Conexion(this);
         conexion.updateAndroidSecurityProvider(this);
+
+        mClaveDistribuidorView.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {}
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                if(mClaveDistribuidorView.getText().length()<5 || mClaveDistribuidorView.getText().length()>5){
+                    mClaveDistribuidorView.setTextColor(Color.BLACK);
+                }else{
+                    mClaveDistribuidorView.setTextColor(Color.BLUE);
+                }
+
+            }
+        });
+
+        mClaveVendedorView.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {}
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                if(mClaveVendedorView.getText().length()<5 || mClaveVendedorView.getText().length()>5 ){
+                    mClaveVendedorView.setTextColor(Color.BLACK);
+                }else{
+                    mClaveVendedorView.setTextColor(Color.BLUE);
+                }
+
+            }
+        });
+
     }
 
 
