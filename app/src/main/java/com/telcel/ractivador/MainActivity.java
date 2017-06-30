@@ -14,8 +14,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.mobsandgeeks.saripaar.annotation.Length;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.mobsandgeeks.saripaar.annotation.Order;
@@ -49,7 +49,7 @@ public class MainActivity extends BaseAppActivity implements AsyncResponse{
     private SessionManager session;
     private static final int ASYNC_ONE = 1; //ID for async
     private Autoupdater updater;
-    private RelativeLayout loadingPanel;
+    //private RelativeLayout loadingPanel;
 
 
 
@@ -111,6 +111,7 @@ public class MainActivity extends BaseAppActivity implements AsyncResponse{
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         checaActualizaciones();
+        subscribeToPushService();
         session = new SessionManager(getApplicationContext());
         firstRun = session.isFirstRun();
         if (!firstRun) {
@@ -181,7 +182,7 @@ public class MainActivity extends BaseAppActivity implements AsyncResponse{
             e.printStackTrace();
         }
 
-        loadingPanel = (RelativeLayout) findViewById(R.id.loadingPanel);
+//        loadingPanel = (RelativeLayout) findViewById(R.id.loadingPanel);
         //Esto sirve si la actualizacion no se realiza al principio. No es este caso.
        // loadingPanel.setVisibility(View.GONE);
         //Creamos el Autoupdater.
@@ -201,7 +202,7 @@ public class MainActivity extends BaseAppActivity implements AsyncResponse{
         @Override
         public void run() {
             //Volvemos el ProgressBar a invisible.
-            loadingPanel.setVisibility(View.GONE);
+          //  loadingPanel.setVisibility(View.GONE);
             //Comprueba que halla nueva versión.
             if(updater.isNewVersionAvailable()){
                 //Crea mensaje con datos de versión.
@@ -218,7 +219,7 @@ public class MainActivity extends BaseAppActivity implements AsyncResponse{
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //Vuelve a poner el ProgressBar mientras se baja e instala.
-                        loadingPanel.setVisibility(View.VISIBLE);
+            //            loadingPanel.setVisibility(View.VISIBLE);
                         //Se ejecuta el Autoupdater con la orden de instalar. Se puede poner un listener o no
                         updater.InstallNewVersion(null);
                     }
@@ -234,4 +235,20 @@ public class MainActivity extends BaseAppActivity implements AsyncResponse{
     };
 
 
+    private void subscribeToPushService() {
+        //  FirebaseApp.initializeApp(this);
+        FirebaseMessaging.getInstance().subscribeToTopic("promocionesT");
+
+        //   Log.d("AndroidBash", "Subscribed");
+        //    Toast.makeText(MainActivity.this, "Subscribed", Toast.LENGTH_SHORT).show();
+
+        //    String token = null;
+
+        //      token = FirebaseInstanceId.getInstance().getToken();
+
+        // Log and toast
+        //
+        //   Toast.makeText(MainActivity.this, token, Toast.LENGTH_SHORT).show();
+        //   Log.d("AndroidBash", token);
+    }
 }
