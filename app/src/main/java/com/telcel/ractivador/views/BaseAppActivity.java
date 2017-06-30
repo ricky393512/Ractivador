@@ -9,6 +9,8 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,7 +20,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -79,11 +80,11 @@ public abstract class BaseAppActivity extends AppCompatActivity implements Valid
                     selectedTextView.setText("Debes seleccionar un elemento");
                 //    ViewGroup.LayoutParams lparams = new ViewGroup.LayoutParams(30,ViewGroup.LayoutParams.WRAP_CONTENT);
                   // selectedTextView.setLayoutParams(new  );
-                    ViewGroup.LayoutParams params = (ViewGroup.LayoutParams) selectedTextView.getLayoutParams();
+                  /*  ViewGroup.LayoutParams params = (ViewGroup.LayoutParams) selectedTextView.getLayoutParams();
                     Log.e("RIVISOR"," Altura "+ params.height);
                     Log.e("RIVISOR"," BAse "+ params.width);
                     selectedTextView.setLayoutParams(params);
-
+*/
                     selectedTextView.setTextSize(12);
                   //  selectedTextView.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
                     Log.e("RVISOR ","Enree a eserror tipo spionner "+((TextView) ((Spinner) view).getSelectedView()).getError());
@@ -196,7 +197,17 @@ public abstract class BaseAppActivity extends AppCompatActivity implements Valid
 
 
     public void acercaDe(){
-        mostrarAlerta("Version 1.0","Rvisor");
+        PackageInfo pckginfo = null;
+        try {
+            pckginfo = this.getPackageManager().getPackageInfo(this.getPackageName(), 0);
+            Log.e("RVOSPR","version"+pckginfo.versionCode);
+            Log.e("RVOSPR","versionNAme"+pckginfo.versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+
+        mostrarAlerta(pckginfo.versionName,"RACTIVADOR");
     }
 
 

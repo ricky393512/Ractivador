@@ -1,21 +1,35 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'ractivador'
+            keyPassword 'java393512'
+            storeFile file('C:/Users/PIN7025/ractivador.jks')
+            storePassword 'java393512'
+        }
+    }
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
-
     defaultConfig {
         applicationId "com.telcel.ractivador"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 1
+        versionCode 3
         versionName "1.0"
+        signingConfig signingConfigs.config
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
+        debug {
+            signingConfig signingConfigs.config
+        }
+    }
+    productFlavors {
     }
 }
 
@@ -25,8 +39,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
     compile 'com.mobsandgeeks:android-saripaar:2.0.3'
-
-
 }
 
 

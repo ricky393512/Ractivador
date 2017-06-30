@@ -41,7 +41,7 @@ public class ConsultaActivity extends BaseAppActivity implements AsyncResponseAc
     EditText campo_imei;
     @Order(value=1)
     @NotEmpty(message = "Debes ingresar un iccid")
-    @Length(max=19,min = 19,message = "Debes ingresar un iccid de 19 digitos")
+    @Length(max=19,min = 18,message = "Debes ingresar un iccid de 19 digitos")
     EditText campo_iccid;
     @Order(value=3)
     @NotEmpty(message = "Debes ingresar un codigo de ciudad")
@@ -155,7 +155,7 @@ public class ConsultaActivity extends BaseAppActivity implements AsyncResponseAc
 
            public void onTextChanged(CharSequence s, int start,
                                      int before, int count) {
-               if(campo_iccid.getText().length()<19 || campo_iccid.getText().length()>19){
+               if(campo_iccid.getText().length()<18 || campo_iccid.getText().length()>19){
                    campo_iccid.setTextColor(Color.BLACK);
                }else{
                    campo_iccid.setTextColor(Color.BLUE);
